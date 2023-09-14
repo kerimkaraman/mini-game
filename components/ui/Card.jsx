@@ -1,12 +1,29 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React from 'react';
+import Colors from '../../util/colors';
 
-export default function Card() {
+export default function Card({ children }) {
     return (
-        <View>
-            <Text>Card</Text>
+        <View style={styles.card}>
+            {children}
         </View>
+
     )
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    card: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 16,
+        marginTop: 36,
+        backgroundColor: Colors.primary800,
+        marginHorizontal: 24,
+        borderRadius: 8,
+        elevation: 4, /* Android Specific */
+        shadowColor: 'black',
+        shadowOpacity: .25,
+        shadowOffset: { width: 0, height: 2 },
+        shadowRadius: 6,
+    },
+});
