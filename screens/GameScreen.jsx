@@ -1,6 +1,7 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
+import { StyleSheet, Text, View, Alert } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import Title from '../components/ui/Title';
+import PrimaryButton from '../components/ui/PrimaryButton';
 import NumberContainer from '../components/game/NumberContainer';
 
 function generateRandomBetween(min, max, exclude) {
@@ -8,16 +9,54 @@ function generateRandomBetween(min, max, exclude) {
 
     if (rndNum === exclude) {
         return generateRandomBetween(min, max, exclude);
-    }
-    else {
+    } else {
         return rndNum;
     }
-};
+}
 
-export default function GameScreen(props) {
+let minBoundary = 1;
+let maxBoundary = 100;
 
-    const initialGuess = generateRandomBetween(1, 100, props.userNumber);
+export default function GameScreen({ userNumber, onGameOver }) {
+
+    const initialGuess = generateRandomBetween(
+        1,
+        100,
+        userNumber
+    );
     const [currentGuess, setCurrentGuess] = useState(initialGuess);
+
+    useEffect(() => {
+        if (currentGuess === userNumber) {
+            onGameOver();
+        }
+    }, [currentGuess, userNumber, onGameOver])
+
+    function nextGuessHandler(direction) {
+        // direction => 'lower', 'greater'
+        if (
+            (direction === 'lower' && currentGuess < userNumber) ||
+            (direction === 'greater' && currentGuess > userNumber)
+        ) {
+            Alert.alert("Don't lie!", 'You know that this is wrong...', [
+                { text: 'Sorry!', style: 'cancel' },
+            ]);
+            return;
+        }
+
+        if (direction === 'lower') {
+            maxBoundary = currentGuess;
+        } else {
+            minBoundary = currentGuess + 1;
+        }
+
+        const newRndNumber = generateRandomBetween(
+            minBoundary,
+            maxBoundary,
+            currentGuess
+        );
+        setCurrentGuess(newRndNumber);
+    }
 
     return (
         <View style={styles.screen}>
@@ -25,7 +64,8 @@ export default function GameScreen(props) {
             <NumberContainer>{currentGuess}</NumberContainer>
             <View>
                 <Text>Higher or Lower</Text>
-                {/* + - */}
+                <PrimaryButton onPress={nextGuessHandler.bind(this, "lower")}>-</PrimaryButton>
+                <PrimaryButton onPress={nextGuessHandler.bind(this, "greater")}>+</PrimaryButton>
             </View>
             <View>
                 {/* LOG ROUNDS */}

@@ -3,8 +3,6 @@ import React from 'react';
 import Colors from '../../util/colors';
 
 export default function PrimaryButton(props) {
-
-
     return (
         <View style={styles.buttonOuterContainer}>
             <Pressable

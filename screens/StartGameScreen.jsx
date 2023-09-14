@@ -2,6 +2,7 @@ import { StyleSheet, View, Text, TextInput, Alert } from 'react-native'
 import React, { useState } from 'react'
 import PrimaryButton from '../components/ui/PrimaryButton'
 import Colors from '../util/colors';
+import Title from '../components/ui/Title';
 
 export default function StartGameScreen(props) {
 
@@ -26,36 +27,45 @@ export default function StartGameScreen(props) {
     }
 
     return (
-        <View style={styles.inputContainer}>
-            <TextInput style={styles.numberInput}
-                keyboardType='numeric'
-                axLength={2}
-                autoCapitalize='none'
-                autoCorrect={false}
-                value={enteredNumber}
-                onChangeText={numberInputHandler}
-            />
-            <View style={styles.buttonsContainer}>
-                <View style={styles.buttonContainer}>
-                    <PrimaryButton onPress={resetInputHandler}>Reset</PrimaryButton>
-                </View>
-                <View style={styles.buttonContainer}>
-                    <PrimaryButton onPress={confirmInputHandler}>Confirm</PrimaryButton>
-                </View>
-                {/* Butonları View'la wraplememizin sebebi kendi kafalarına göre width almamaları, 
+        <View style={styles.rootContainer}>
+            <Title>Guess My Number</Title>
+            <View style={styles.inputContainer}>
+                <Text style={styles.instructionText}>Enter a Number</Text>
+                <TextInput style={styles.numberInput}
+                    keyboardType='numeric'
+                    axLength={2}
+                    autoCapitalize='none'
+                    autoCorrect={false}
+                    value={enteredNumber}
+                    onChangeText={numberInputHandler}
+                />
+                <View style={styles.buttonsContainer}>
+                    <View style={styles.buttonContainer}>
+                        <PrimaryButton onPress={resetInputHandler}>Reset</PrimaryButton>
+                    </View>
+                    <View style={styles.buttonContainer}>
+                        <PrimaryButton onPress={confirmInputHandler}>Confirm</PrimaryButton>
+                    </View>
+                    {/* Butonları View'la wraplememizin sebebi kendi kafalarına göre width almamaları, 
                     buttoncontainer'a da flex: 1 vererek alabildiği kadar alan almasını sağladık
                 */}
-            </View>
-        </View >
+                </View>
+            </View >
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
+    rootContainer: {
+        flex: 1,
+        marginTop: 100,
+        alignItems: 'center'
+    },
     inputContainer: {
         justifyContent: 'center',
         alignItems: 'center',
         padding: 16,
-        marginTop: 100,
+        marginTop: 36,
         backgroundColor: Colors.primary800,
         marginHorizontal: 24,
         borderRadius: 8,
@@ -64,6 +74,10 @@ const styles = StyleSheet.create({
         shadowOpacity: .25,
         shadowOffset: { width: 0, height: 2 },
         shadowRadius: 6,
+    },
+    instructionText: {
+        color: Colors.accent500,
+        fontSize: 24,
     },
     numberInput: {
         height: 50,

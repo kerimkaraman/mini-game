@@ -5,7 +5,7 @@ export default function GameOverScreen() {
     return (
         <View>
             <Text>
-
+                game is over
             </Text>
         </View>
     )
