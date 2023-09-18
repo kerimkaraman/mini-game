@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import Colors from '../../util/colors';
 
-export default function GuessLogItem() {
+export default function GuessLogItem({ roundNumber, guess }) {
     return (
         <View style={styles.listItem}>
             <Text style={styles.itemText}>#{roundNumber}</Text>
