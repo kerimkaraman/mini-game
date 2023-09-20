@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, TextInput, Alert } from 'react-native'
+import { StyleSheet, View, useWindowDimensions, TextInput, Alert, KeyboardAvoidingView, ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import PrimaryButton from '../components/ui/PrimaryButton'
 import Colors from '../util/colors';
@@ -14,6 +14,8 @@ export default function StartGameScreen(props) {
         setEnteredNumber(enteredText);
     }
 
+    const { width, height } = useWindowDimensions();
+
     function resetInputHandler() {
         setEnteredNumber("");
     }
@@ -28,40 +30,45 @@ export default function StartGameScreen(props) {
         props.onPickNumber(chosenNumber);
     }
 
+    const marginTopDistance = height < 380 ? 20 : 100;
+
     return (
-        <View style={styles.rootContainer}>
-            <Title>Guess My Number</Title>
-            <Card>
-                <InstructionText>Enter a Number</InstructionText>
-                <TextInput style={styles.numberInput}
-                    keyboardType='numeric'
-                    axLength={2}
-                    autoCapitalize='none'
-                    autoCorrect={false}
-                    value={enteredNumber}
-                    onChangeText={numberInputHandler}
-                />
-                <View style={styles.buttonsContainer}>
-                    <View style={styles.buttonContainer}>
-                        <PrimaryButton onPress={resetInputHandler}>Reset</PrimaryButton>
-                    </View>
-                    <View style={styles.buttonContainer}>
-                        <PrimaryButton onPress={confirmInputHandler}>Confirm</PrimaryButton>
-                    </View>
-                    {/* Butonları View'la wraplememizin sebebi kendi kafalarına göre width almamaları, 
+        <ScrollView style={{ flex: 1 }}>
+            <KeyboardAvoidingView style={{ flex: 1 }} behavior='position'>
+                <View style={[{ marginTop: marginTopDistance }, styles.rootContainer]}>
+                    <Title>Guess My Number</Title>
+                    <Card>
+                        <InstructionText>Enter a Number</InstructionText>
+                        <TextInput style={styles.numberInput}
+                            keyboardType='numeric'
+                            axLength={2}
+                            autoCapitalize='none'
+                            autoCorrect={false}
+                            value={enteredNumber}
+                            onChangeText={numberInputHandler}
+                        />
+                        <View style={styles.buttonsContainer}>
+                            <View style={styles.buttonContainer}>
+                                <PrimaryButton onPress={resetInputHandler}>Reset</PrimaryButton>
+                            </View>
+                            <View style={styles.buttonContainer}>
+                                <PrimaryButton onPress={confirmInputHandler}>Confirm</PrimaryButton>
+                            </View>
+                            {/* Butonları View'la wraplememizin sebebi kendi kafalarına göre width almamaları, 
                     buttoncontainer'a da flex: 1 vererek alabildiği kadar alan almasını sağladık
                 */}
+                        </View>
+                    </Card>
                 </View>
-            </Card>
-        </View>
+            </KeyboardAvoidingView>
+        </ScrollView>
     )
-}
+};
 
 const styles = StyleSheet.create({
     rootContainer: {
         flex: 1,
-        marginTop: 100,
-        alignItems: 'center'
+        alignItems: 'center',
     },
 
     numberInput: {
